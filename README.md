@@ -2139,4 +2139,45 @@ Privacy
 English
 The new page has loaded..
 
+type User @table {
+  displayName: String!
+  email: String
+  photoUrl: String
+  shippingAddress: String
+  createdAt: Timestamp!
+}
+
+type Product @table {
+  name: String!
+  description: String!
+  price: Float!
+  imageUrl: String!
+  inventoryCount: Int
+  category: String
+  createdAt: Timestamp!
+}
+
+type Order @table {
+  user: User!
+  orderDate: Timestamp!
+  totalAmount: Float!
+  status: String!
+  shippingAddress: String
+  trackingNumber: String
+}
+
+type OrderItem @table {
+  order: Order!
+  product: Product!
+  quantity: Int!
+  price: Float!
+}
+
+type Category @table {
+  name: String!
+  description: String
+  createdAt: Timestamp!
+}
+
+
 
