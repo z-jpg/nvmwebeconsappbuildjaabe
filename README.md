@@ -1,3 +1,4 @@
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 4b4154ea040349bfd40215ec4e4cc9f372fe95f3#
 # Contributing to Angular
 
