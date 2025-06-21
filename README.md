@@ -1,6 +1,8 @@
 ([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 4b4154ea040349bfd40215ec4e4cc9f372fe95f3#
+nvm install 20.10.0
 # Contributing to Angular
+nvm install 20.10.0
 <docs-decorative-header title="What is Angular?" imgSrc="adev/src/assets/images/what_is_angular.svg"> <!-- markdownlint-disable-line -->
 </docs-decorative-header>
 
