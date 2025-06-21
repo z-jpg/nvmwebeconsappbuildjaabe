@@ -923,6 +923,18 @@ docker pull node:22-alpine
 
 # Create a Node.js container and start a Shell session:
 docker run -it --rm --entrypoint sh node:22-alpine
+# Use bash for the shell
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+# Create a script file sourced by both interactive and non-interactive bash shells
+ENV BASH_ENV /home/user/.bash_env
+RUN touch "${BASH_ENV}"
+RUN echo '. "${BASH_ENV}"' >> ~/.bashrc
+
+# Download and install nvm
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | PROFILE="${BASH_ENV}" bash
+RUN echo node > .nvmrc
+RUN nvm install
 
 # Verify the Node.js version:
 node -v # Should print "v22.16.0".
