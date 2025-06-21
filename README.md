@@ -8,7 +8,7 @@ nvm install 20.10.0
   </picture>
 </a>
 
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 # Node Version Manager [![Build Status](https://app.travis-ci.com/nvm-sh/nvm.svg?branch=master)][3] [![nvm version](https://img.shields.io/badge/version-v0.40.3-yellow.svg)][4] [![CII Best Practices](https://bestpractices.dev/projects/684/badge)](https://bestpractices.dev/projects/684)
 
 <!-- To update this table of contents, ensure you have run `npm install` then `npm run doctoc` -->
@@ -98,7 +98,7 @@ Simple as that!
 
 ## About
 nvm is a version manager for [node.js](https://nodejs.org/en/), designed to be installed per-user, and invoked per-shell. `nvm` works on any POSIX-compliant shell (sh, dash, ksh, zsh, bash), in particular on these platforms: unix, macOS, and [windows WSL](https://github.com/nvm-sh/nvm#important-notes).
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 <a id="installation-and-update"></a>
 <a id="install-script"></a>
 ## Installing and Updating
@@ -140,11 +140,12 @@ Eg: `curl ... | NVM_DIR="path/to/nvm"`. Ensure that the `NVM_DIR` does not conta
 - You can instruct the installer to not edit your shell config (for example if you already get completions via a [zsh nvm plugin](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/nvm)) by setting `PROFILE=/dev/null` before running the `install.sh` script. Here's an example one-line command to do that: `PROFILE=/dev/null bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash'`
 
 #### Installing in Docker
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 When invoking bash as a non-interactive shell, like in a Docker container, none of the regular profile files are sourced. In order to use `nvm`, `node`, and `npm` like normal, you can instead specify the special `BASH_ENV` variable, which bash sources when invoked non-interactively.
 
 ```Dockerfile
 # Use bash for the shell
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Create a script file sourced by both interactive and non-interactive bash shells
@@ -159,7 +160,7 @@ RUN nvm install
 ```
 
 ##### Installing in Docker for CICD-Jobs
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 More robust, works in CI/CD-Jobs. Can be run in interactive and non-interactive containers.
 See https://github.com/nvm-sh/nvm/issues/3531.
 
@@ -189,7 +190,7 @@ CMD ["/bin/bash"]
 
 This example defaults to installation of nodejs version 20.x.y. Optionally you can easily override the version with docker build args like:
 ```
-docker build -t nvmimage --build-arg NODE_VERSION=19 .
+docker build -t nvmimage --build-arg NODE_VERSION=20 or 22 .
 ```
 
 After creation of the image you can start container interactively and run commands, for example:
@@ -209,11 +210,11 @@ root@0a6b5a237c14:/# npm -v
 Noninteractive example:
 ```
 user@host:/tmp/test $ docker run --rm -it nvmimage node -v
-v19.9.0
+v20 or 22
 user@host:/tmp/test $ docker run --rm -it nvmimage npm -v
-9.6.3
+20 oe 22
 ```
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 #### Troubleshooting on Linux
 
 On Linux, after running the install script, if you get `nvm: command not found` or see no feedback from your terminal after you type `command -v nvm`, simply close your current terminal, open a new terminal, and try verifying again.
@@ -226,7 +227,7 @@ Alternatively, you can run the following commands for the different shells on th
 *ksh*: `. ~/.profile`
 
 These should pick up the `nvm` command.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 #### Troubleshooting on macOS
 
 Since OS X 10.9, `/usr/bin/git` has been preset by Xcode command line tools, which means we can't properly detect if Git is installed or not. You need to manually install the Xcode command line tools before running the install script, otherwise, it'll fail. (see [#1782](https://github.com/nvm-sh/nvm/issues/1782))
@@ -238,6 +239,11 @@ If you get `nvm: command not found` after running the install script, one of the
   - If you use bash, the previous default shell, your system may not have `.bash_profile` or `.bashrc` files where the command is set up. Create one of them with `touch ~/.bash_profile` or `touch ~/.bashrc` and run the install script again. Then, run `. ~/.bash_profile` or `. ~/.bashrc` to pick up the `nvm` command.
 
   - You have previously used `bash`, but you have `zsh` installed. You need to manually add [these lines](#manual-install) to `~/.zshrc` and run `. ~/.zshrc`.
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
+   
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
   - You might need to restart your terminal instance or run `. ~/.nvm/nvm.sh`. Restarting your terminal/opening a new tab/window, or running the source command will load the command and the new configuration.
 
@@ -246,13 +252,13 @@ If you get `nvm: command not found` after running the install script, one of the
 If the above doesn't fix the problem, you may try the following:
 
   - If you use bash, it may be that your `.bash_profile` (or `~/.profile`) does not source your `~/.bashrc` properly. You could fix this by adding `source ~/<your_profile_file>` to it or following the next step below.
-
-  - Try adding [the snippet from the install section](#profile_snippet), that finds the correct nvm directory and loads nvm, to your usual profile (`~/.bash_profile`, `~/.zshrc`, `~/.profile`, or `~/.bashrc`).
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
+  - Try adding [the snippet from the install section](#z-jpg/nvmwebeconsappbuilddjaabe), that finds the correct nvm directory and loads nvm, to your usual profile (`~/.bash_profile`, `~/.zshrc`, `~/.profile`, or `~/.bashrc`).
 
   - For more information about this issue and possible workarounds, please [refer here](https://github.com/nvm-sh/nvm/issues/576)
 
 **Note** For Macs with the Apple Silicon chip, node started offering **arm64** arch Darwin packages since v16.0.0 and experimental **arm64** support when compiling from source since v14.17.0. If you are facing issues installing node using `nvm`, you may want to update to one of those versions or later.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 #### Ansible
 
 You can use a task:
@@ -264,11 +270,11 @@ You can use a task:
   args:
     creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
 ```
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ### Verify Installation
 
 To verify that nvm has been installed, do:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
 command -v nvm
 ```
@@ -282,13 +288,13 @@ which should output `nvm` if the installation was successful. Please note that `
 If you're running a system without prepackaged binary available, which means you're going to install node or io.js from its source code, you need to make sure your system has a C++ compiler. For OS X, Xcode will work, for Debian/Ubuntu based GNU/Linux, the `build-essential` and `libssl-dev` packages work.
 
 **Note:** `nvm` also supports Windows in some cases. It should work through WSL (Windows Subsystem for Linux) depending on the version of WSL. It should also work with [GitBash](https://gitforwindows.org/) (MSYS) or [Cygwin](https://cygwin.com). Otherwise, for Windows, a few alternatives exist, which are neither supported nor developed by us:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
   - [nvm-windows](https://github.com/coreybutler/nvm-windows)
   - [nodist](https://github.com/marcelklehr/nodist)
   - [nvs](https://github.com/jasongin/nvs)
 
 **Note:** `nvm` does not support [Fish] either (see [#303](https://github.com/nvm-sh/nvm/issues/303)). Alternatives exist, which are neither supported nor developed by us:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
   - [bass](https://github.com/edc/bass) allows you to use utilities written for Bash in fish shell
   - [fast-nvm-fish](https://github.com/brigand/fast-nvm-fish) only works with version numbers (not aliases) but doesn't significantly slow your shell startup
   - [plugin-nvm](https://github.com/derekstavis/plugin-nvm) plugin for [Oh My Fish](https://github.com/oh-my-fish/oh-my-fish), which makes nvm and its completions available in fish shell
@@ -296,7 +302,7 @@ If you're running a system without prepackaged binary available, which means you
   - [fish-nvm](https://github.com/FabioAntunes/fish-nvm) - Wrapper around nvm for fish, delays sourcing nvm until it's actually used.
 
 **Note:** We still have some problems with FreeBSD, because there is no official pre-built binary for FreeBSD, and building from source may need [patches](https://www.freshports.org/www/node/files/patch-deps_v8_src_base_platform_platform-posix.cc); see the issue ticket:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
   - [[#900] [Bug] node on FreeBSD may need to be patched](https://github.com/nvm-sh/nvm/issues/900)
   - [nodejs/node#3716](https://github.com/nodejs/node/issues/3716)
 
@@ -311,12 +317,12 @@ If you're running a system without prepackaged binary available, which means you
   - You can (but should not?) keep your previous "system" node install, but `nvm` will only be available to your user account (the one used to install nvm). This might cause version mismatches, as other users will be using `/usr/local/lib/node_modules/*` VS your user account using `~/.nvm/versions/node/vX.X.X/lib/node_modules/*`
 
 Homebrew installation is not supported. If you have issues with homebrew-installed `nvm`, please `brew uninstall` it, and install it using the instructions below, before filing an issue.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 **Note:** If you're using `zsh` you can easily install `nvm` as a zsh plugin. Install [`zsh-nvm`](https://github.com/lukechilds/zsh-nvm) and run `nvm upgrade` to upgrade ([you can set](https://github.com/lukechilds/zsh-nvm#auto-use) `NVM_AUTO_USE=true` to have it automatically detect and use `.nvmrc` files).
 
 **Note:** Git versions before v1.7 may face a problem of cloning `nvm` source from GitHub via https protocol, and there is also different behavior of git before v1.6, and git prior to [v1.17.10](https://github.com/git/git/commit/5a7d5b683f869d3e3884a89775241afa515da9e7) can not clone tags, so the minimum required git version is v1.7.10. If you are interested in the problem we mentioned here, please refer to GitHub's [HTTPS cloning errors](https://help.github.com/articles/https-cloning-errors/) article.
 
-### Git Install
+#([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")## Git Install
 
 If you have `git` installed (requires git v1.7.10+):
 
@@ -324,7 +330,7 @@ If you have `git` installed (requires git v1.7.10+):
     - `cd ~/` from anywhere then `git clone https://github.com/nvm-sh/nvm.git .nvm`
 1. `cd ~/.nvm` and check out the latest version with `git checkout v0.40.3`
 1. activate `nvm` by sourcing it from your shell: `. ./nvm.sh`
-
+https://github.com/nvm-sh/nvm.git .nvm`
 Now add these lines to your `~/.bashrc`, `~/.profile`, or `~/.zshrc` file to have it automatically sourced upon login:
 (you may have to add to more than one of the above files)
 
@@ -333,7 +339,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 ```
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ### Manual Install
 
 For a fully manual install, execute the following lines to first clone the `nvm` repository into `$HOME/.nvm`, and then load `nvm`:
@@ -354,7 +360,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 ```
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ### Manual Upgrade
 
 For manual upgrade with `git` (requires git v1.7.10+):
@@ -371,7 +377,7 @@ For manual upgrade with `git` (requires git v1.7.10+):
   git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)`
 ) && \. "$NVM_DIR/nvm.sh"
 ```
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ## Usage
 
 To download, compile, and install the latest release of node, do this:
@@ -416,22 +422,22 @@ nvm run node --version
 Or, you can run any arbitrary command in a subshell with the desired version of node:
 
 ```sh
-nvm exec 4.2 node --version
+nvm exec 20 or 22 node --version
 ```
 
 You can also get the path to the executable to where it was installed:
 
 ```sh
-nvm which 12.22
+nvm which 20 or 22
 ```
 
-In place of a version pointer like "14.7" or "16.3" or "12.22.1", you can use the following special default aliases with `nvm install`, `nvm use`, `nvm run`, `nvm exec`, `nvm which`, etc:
+In place of a version pointer like 20 or 22, you can use the following special default aliases with `nvm install`, `nvm use`, `nvm run`, `nvm exec`, `nvm which`, etc:
 
   - `node`: this installs the latest version of [`node`](https://nodejs.org/en/)
   - `iojs`: this installs the latest version of [`io.js`](https://iojs.org/en/)
   - `stable`: this alias is deprecated, and only truly applies to `node` `v0.12` and earlier. Currently, this is an alias for `node`.
   - `unstable`: this alias points to `node` `v0.11` - the last "unstable" node release, since post-1.0, all node versions are stable. (in SemVer, versions communicate breakage, not stability).
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ### Long-term Support
 
 Node has a [schedule](https://github.com/nodejs/Release#release-schedule) for long-term support (LTS) You can reference LTS versions in aliases and `.nvmrc` files with the notation `lts/*` for the latest LTS, and `lts/argon` for LTS releases from the "argon" line, for example. In addition, the following commands support LTS arguments:
@@ -447,15 +453,15 @@ Node has a [schedule](https://github.com/nodejs/Release#release-schedule) for lo
 Any time your local copy of `nvm` connects to https://nodejs.org, it will re-create the appropriate local aliases for all available LTS lines. These aliases (stored under `$NVM_DIR/alias/lts`), are managed by `nvm`, and you should not modify, remove, or create these files - expect your changes to be undone, and expect meddling with these files to cause bugs that will likely not be supported.
 
 To get the latest LTS version of node and migrate your existing installed packages, use
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
 nvm install --reinstall-packages-from=current 'lts/*'
 ```
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ### Migrating Global Packages While Installing
 
 If you want to install a new version of Node.js and migrate npm packages from a previous version:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
 nvm install --reinstall-packages-from=node node
 ```
@@ -463,79 +469,80 @@ nvm install --reinstall-packages-from=node node
 This will first use "nvm version node" to identify the current version you're migrating packages from. Then it resolves the new version to install from the remote server and installs it. Lastly, it runs "nvm reinstall-packages" to reinstall the npm packages from your prior version of Node to the new one.
 
 You can also install and migrate npm packages from specific versions of Node like this:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
-nvm install --reinstall-packages-from=5 6
-nvm install --reinstall-packages-from=iojs v4.2
+nvm install --reinstall-packages-from=18 - 20 or 22
+nvm install --reinstall-packages-from=iojs v18 - 20 or 22
 ```
 
 Note that reinstalling packages _explicitly does not update the npm version_ — this is to ensure that npm isn't accidentally upgraded to a broken version for the new node version.
 
 To update npm at the same time add the `--latest-npm` flag, like this:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
 nvm install --reinstall-packages-from=default --latest-npm 'lts/*'
 ```
 
-or, you can at any time run the following command to get the latest supported npm version on the current node version:
+or, you can at any time run the following command to get the latest supported npm version on the current node version 20 or 22:
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
 nvm install-latest-npm
 ```
 
 If you've already gotten an error to the effect of "npm does not support Node.js", you'll need to (1) revert to a previous node version (`nvm ls` & `nvm use <your latest _working_ version from the ls>`), (2) delete the newly created node version (`nvm uninstall <your _broken_ version of node from the ls>`), then (3) rerun your `nvm install` with the `--latest-npm` flag.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 
 ### Default Global Packages From File While Installing
 
 If you have a list of default packages you want installed every time you install a new version, we support that too -- just add the package names, one per line, to the file `$NVM_DIR/default-packages`. You can add anything npm would accept as a package argument on the command line.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
 # $NVM_DIR/default-packages
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 rimraf
 object-inspect@1.0.2
 stevemao/left-pad
 ```
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ### io.js
 
 If you want to install [io.js](https://github.com/iojs/io.js/):
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
 nvm install iojs
 ```
 
 If you want to install a new version of io.js and migrate npm packages from a previous version:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
 nvm install --reinstall-packages-from=iojs iojs
 ```
 
 The same guidelines mentioned for migrating npm packages in node are applicable to io.js.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ### System Version of Node
 
 If you want to use the system-installed version of node, you can use the special default alias "system":
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
 nvm use system
 nvm run system --version
 ```
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ### Listing Versions
 
 If you want to see what versions are installed:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
 nvm ls
 ```
 
 If you want to see what versions are available to install:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
 nvm ls-remote
 ```
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ### Setting Custom Colors
 
 You can set five colors that will be used to display version and alias information. These colors replace the default colors.
@@ -558,7 +565,7 @@ You can set five colors that will be used to display version and alias informati
     k/K = black / bold black
 
     e/W = light grey / white
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
 nvm set-colors rgBcm
 ```
@@ -566,7 +573,7 @@ nvm set-colors rgBcm
 #### Persisting custom colors
 
 If you want the custom colors to persist after terminating the shell, export the `NVM_COLORS` variable in your shell profile. For example, if you want to use cyan, magenta, green, bold red and bold yellow, add the following line:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
 export NVM_COLORS='cmgRY'
 ```
@@ -574,7 +581,7 @@ export NVM_COLORS='cmgRY'
 #### Suppressing colorized output
 
 `nvm help (or -h or --help)`, `nvm ls`, `nvm ls-remote` and `nvm alias` usually produce colorized output. You can disable colors with the `--no-colors` option (or by setting the environment variable `TERM=dumb`):
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
 nvm ls --no-colors
 nvm help --no-colors
@@ -583,14 +590,14 @@ TERM=dumb nvm ls
 
 ### Restoring PATH
 To restore your PATH, you can deactivate it:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
 nvm deactivate
 ```
 
 ### Set default node version
 To set a default Node version to be used in any new shell, use the alias 'default':
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
 nvm alias default node # this refers to the latest installed version of node
 nvm alias default 18 # this refers to the latest installed v18.x version of node
@@ -599,39 +606,39 @@ nvm alias default 18.12  # this refers to the latest installed v18.12.x version 
 
 ### Use a mirror of node binaries
 To use a mirror of the node binaries, set `$NVM_NODEJS_ORG_MIRROR`:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
 export NVM_NODEJS_ORG_MIRROR=https://nodejs.org/dist
 nvm install node
 
-NVM_NODEJS_ORG_MIRROR=https://nodejs.org/dist nvm install 4.2
+NVM_NODEJS_ORG_MIRROR=https://nodejs.org/dist nvm install 20 or 22
 ```
 
 To use a mirror of the io.js binaries, set `$NVM_IOJS_ORG_MIRROR`:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
 export NVM_IOJS_ORG_MIRROR=https://iojs.org/dist
 nvm install iojs-v1.0.3
 
-NVM_IOJS_ORG_MIRROR=https://iojs.org/dist nvm install iojs-v1.0.3
+NVM_IOJS_ORG_MIRROR=https://iojs.org/dist nvm install iojs-v20 or 22
 ```
 
 `nvm use` will not, by default, create a "current" symlink. Set `$NVM_SYMLINK_CURRENT` to "true" to enable this behavior, which is sometimes useful for IDEs. Note that using `nvm` in multiple shell tabs with this environment variable enabled can cause race conditions.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 #### Pass Authorization header to mirror
 To pass an Authorization header through to the mirror url, set `$NVM_AUTH_HEADER`
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
 NVM_AUTH_HEADER="Bearer secret-token" nvm install node
 ```
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ### .nvmrc
 
 You can create a `.nvmrc` file containing a node version number (or any other string that `nvm` understands; see `nvm --help` for details) in the project root directory (or any parent directory).
 Afterwards, `nvm use`, `nvm install`, `nvm exec`, `nvm run`, and `nvm which` will use the version specified in the `.nvmrc` file if no version is supplied on the command line.
 
 For example, to make nvm default to the latest 5.9 release, the latest LTS version, or the latest node version for the current directory:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
 $ echo "5.9" > .nvmrc
 
@@ -643,7 +650,7 @@ $ echo "node" > .nvmrc # to default to the latest version
 [NB these examples assume a POSIX-compliant shell version of `echo`. If you use a Windows `cmd` development environment, eg the `.nvmrc` file is used to configure a remote Linux deployment, then keep in mind the `"`s will be copied leading to an invalid file. Remove them.]
 
 Then when you run nvm use:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
 $ nvm use
 Found '/path/to/project/.nvmrc' with version <5.9>
@@ -651,16 +658,16 @@ Now using node v5.9.1 (npm v3.7.3)
 ```
 
 Running nvm install will also switch over to the correct version, but if the correct node version isn't already installed, it will install it for you.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
 $ nvm install
-Found '/path/to/project/.nvmrc' with version <5.9>
-Downloading and installing node v5.9.1...
-Downloading https://nodejs.org/dist/v5.9.1/node-v5.9.1-linux-x64.tar.xz...
+Found '/path/to/project/.nvmrc' with version <18>
+Downloading and installing node v20 or 22...
+Downloading https://nodejs.org/dist/v20 or 22/node-v20 or 22-linux-x64.tar.xz...
 #################################################################################### 100.0%
 Computing checksum with sha256sum
 Checksums matched!
-Now using node v5.9.1 (npm v3.7.3)
+Now using node v118 (npm v20 or 22)
 ```
 
 `nvm use` et. al. will traverse directory structure upwards from the current directory looking for the `.nvmrc` file. In other words, running `nvm use` et. al. in any subdirectory of a directory with an `.nvmrc` will result in that `.nvmrc` being utilized.
@@ -680,11 +687,11 @@ If you prefer a lighter-weight solution, the recipes below have been contributed
 #### Calling `nvm use` automatically in a directory with a `.nvmrc` file
 
 In your profile (`~/.bash_profile`, `~/.zshrc`, `~/.profile`, or `~/.bashrc`), add the following to `nvm use` whenever you enter a new directory:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ##### bash
 
 Put the following at the end of your `$HOME/.bashrc`:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```bash
 cdnvm() {
     command cd "$@" || return $?
@@ -733,14 +740,14 @@ cdnvm "$PWD" || exit
 ```
 
 This alias would search 'up' from your current directory in order to detect a `.nvmrc` file. If it finds it, it will switch to that version; if not, it will use the default version.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ##### zsh
 
 This shell function will install (if needed) and `nvm use` the specified Node version when an `.nvmrc` is found, and `nvm use default` otherwise.
 
 Put this into your `$HOME/.zshrc` to call `nvm use` automatically whenever you enter a directory that contains an
 `.nvmrc` file with a string telling nvm which node to `use`:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```zsh
 # place this after nvm initialization!
 autoload -U add-zsh-hook
@@ -769,7 +776,7 @@ load-nvmrc
 ```
 
 After saving the file, run `source ~/.zshrc` to reload the configuration with the latest changes made.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ##### fish
 
 This requires that you have [bass](https://github.com/edc/bass) installed.
@@ -806,30 +813,30 @@ end
 # You must call it on initialization or listening to directory switching won't work
 load_nvm > /dev/stderr
 ```
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ## Running Tests
 
 Tests are written in [Urchin]. Install Urchin (and other dependencies) like so:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
     npm install
 
 There are slow tests and fast tests. The slow tests do things like install node
 and check that the right versions are used. The fast tests fake this to test
 things like aliases and uninstalling. From the root of the nvm git repository,
 run the fast tests like this:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
     npm run test/fast
 
 Run the slow tests like this:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
     npm run test/slow
 
 Run all of the tests like this:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
     npm test
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 Nota bene: Avoid running nvm while the tests are running.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ## Environment variables
 
 nvm exposes the following environment variables:
@@ -842,19 +849,19 @@ nvm exposes the following environment variables:
 
 Additionally, nvm modifies `PATH`, and, if present, `MANPATH` and `NODE_PATH` when changing versions.
 
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ## Bash Completion
 
 To activate, you need to source `bash_completion`:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
 [[ -r $NVM_DIR/bash_completion ]] && \. $NVM_DIR/bash_completion
 ```
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 Put the above sourcing line just below the sourcing line for nvm in your profile (`.bashrc`, `.bash_profile`).
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ### Usage
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 nvm:
 
 > `$ nvm` <kbd>Tab</kbd>
@@ -875,22 +882,23 @@ default      iojs         lts/*        lts/argon    lts/boron    lts/carbon   lt
 > `$ nvm alias my_alias` <kbd>Tab</kbd>
 ```sh
 v10.22.0       v12.18.3      v14.8.0
+v18
 ```
 
 nvm use:
 > `$ nvm use` <kbd>Tab</kbd>
 
 ```
-my_alias        default        v10.22.0       v12.18.3      v14.8.0
+my_alias        default        v10.22.0       v12.18.3      v14.8.0 v18
 ```
 
 nvm uninstall:
 > `$ nvm uninstall` <kbd>Tab</kbd>
 
 ```
-my_alias        default        v10.22.0       v12.18.3      v14.8.0
+my_alias        default        v10.22.0       v12.18.3      v14.8.0 v18
 ```
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ## Compatibility Issues
 
 `nvm` will encounter some issues if you have some non-default settings set. (see [#606](https://github.com/nvm-sh/nvm/issues/606))
@@ -914,7 +922,7 @@ Shell settings:
 ```sh
 set -e
 ```
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ## Installing nvm on Alpine Linux
 
 In order to provide the best performance (and other optimizations), nvm will download and install pre-compiled binaries for Node (and npm) when you run `nvm install X`. The Node project compiles, tests and hosts/provides these pre-compiled binaries which are built for mainstream/traditional Linux distributions (such as Debian, Ubuntu, CentOS, RedHat et al).
@@ -924,13 +932,13 @@ Alpine Linux, unlike mainstream/traditional Linux distributions, is based on [Bu
 There is a `-s` flag for `nvm install` which requests nvm download Node source and compile it locally.
 
 If installing nvm on Alpine Linux *is* still what you want or need to do, you should be able to achieve this by running the following from you Alpine Linux shell, depending on which version you are using:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ### Alpine Linux 3.13+
 ```sh
 apk add -U curl bash ca-certificates openssl ncurses coreutils python3 make gcc g++ libgcc linux-headers grep util-linux binutils findutils
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 ```
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ### Alpine Linux 3.5 - 3.12
 ```sh
 apk add -U curl bash ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils
@@ -951,7 +959,7 @@ As a potential alternative, @mhart (a Node contributor) has some [Docker images 
 To remove `nvm` manually, execute the following:
 
 First, use `nvm unload` to remove the nvm command from your terminal session and delete the installation directory:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
 $ nvm_dir="${NVM_DIR:-~/.nvm}"
 $ nvm unload
@@ -969,7 +977,7 @@ export NVM_DIR="$HOME/.nvm"
 ## Docker For Development Environment
 
 To make the development and testing work easier, we have a Dockerfile for development usage, which is based on Ubuntu 18.04 base image, prepared with essential and useful tools for `nvm` development, to build the docker image of the environment, run the docker command at the root of `nvm` repository:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
 $ docker build -t nvm-dev .
 ```
@@ -984,7 +992,7 @@ nvm-dev            latest              9ca4c57a97d8        7 days ago          6
 ```
 
 If you got no error message, now you can easily involve in:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
 $ docker run -h nvm-dev -it nvm-dev
 
@@ -1007,7 +1015,7 @@ For more information and documentation about docker, please refer to its officia
   - Where's my `sudo node`? Check out [#43](https://github.com/nvm-sh/nvm/issues/43)
 
   - After the v0.8.6 release of node, nvm tries to install from binary packages. But in some systems, the official binary packages don't work due to incompatibility of shared libs. In such cases, use `-s` option to force install from source:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```sh
 nvm install -s 0.8.6
 ```
@@ -1019,13 +1027,13 @@ nvm install -s 0.8.6
 **nvm node version not found in vim shell**
 
 If you set node version to a version other than your system node version `nvm use 6.2.1` and open vim and run `:!node -v` you should see `v6.2.1` if you see your system version `v0.12.7`. You need to run:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```shell
 sudo chmod ugo-x /usr/libexec/path_helper
 ```
 
 More on this issue in [dotphiles/dotzsh](https://github.com/dotphiles/dotzsh#mac-os-x).
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 **nvm is not compatible with the npm config "prefix" option**
 
 Some solutions for this issue can be found [here](https://github.com/nvm-sh/nvm/issues/1245)
@@ -1033,7 +1041,7 @@ Some solutions for this issue can be found [here](https://github.com/nvm-sh/nvm/
 There is one more edge case causing this issue, and that's a **mismatch between the `$HOME` path and the user's home directory's actual name**.
 
 You have to make sure that the user directory name in `$HOME` and the user directory name you'd see from running `ls /Users/` **are capitalized the same way** ([See this issue](https://github.com/nvm-sh/nvm/issues/2261)).
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 To change the user directory and/or account name follow the instructions [here](https://support.apple.com/en-us/HT201548)
 
 [1]: https://github.com/nvm-sh/nvm.git
@@ -1044,7 +1052,7 @@ To change the user directory and/or account name follow the instructions [here](
 [Fish]: https://fishshell.com
 
 **Homebrew makes zsh directories unsecure**
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```shell
 zsh compinit: insecure directories, run compaudit for list.
 Ignore insecure directories and continue [y] or abort compinit [n]? y
@@ -1061,7 +1069,7 @@ So, if you want to run a version prior to v16.0 on an Apple Silicon Mac, it may 
 Here's what you will need to do:
 
 - Install Rosetta, if you haven't already done so
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
   ```sh
   $ softwareupdate --install-rosetta
   ```
@@ -1070,7 +1078,7 @@ Here's what you will need to do:
   If an executable contains only Intel instructions, macOS will automatically use Rosetta to translate the instructions.
 
 - Open a shell that's running using Rosetta
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
   ```sh
   $ arch -x86_64 zsh
   ```
@@ -1080,16 +1088,16 @@ Here's what you will need to do:
   Note: This terminal session is now running in `zsh`.
   If `zsh` is not the shell you typically use, `nvm` may not be `source`'d automatically like it probably is for your usual shell through your dotfiles.
   If that's the case, make sure to source `nvm`.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
   ```sh
   $ source "${NVM_DIR}/nvm.sh"
   ```
 
-- Install whatever older version of node you are interested in. Let's use 12.22.1 as an example.
+- Install whatever older version of node you are interested in. Let's use 20 or 22 as an example.
   This will fetch the node source code and compile it, which will take several minutes.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
   ```sh
-  $ nvm install v12.22.1 --shared-zlib
+  $ nvm install v20 or 22 --shared-zlib
   ```
 
   Note: You're probably curious why `--shared-zlib` is included.
@@ -1100,7 +1108,7 @@ Here's what you will need to do:
   For more details, see [this issue](https://github.com/nodejs/node/issues/39313) and [this comment](https://github.com/nodejs/node/issues/39313#issuecomment-90.40.376)
 
 - Exit back to your native shell.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
   ```sh
   $ exit
   $ arch
@@ -1111,7 +1119,7 @@ Here's what you will need to do:
   Unless you have another reason to have that box selected, you can deselect it now.
 
 - Check to make sure the architecture is correct. `x64` is the abbreviation for `x86_64`, which is what you want to see.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
   ```sh
   $ node -p process.arch
   x64
@@ -1136,7 +1144,7 @@ Where you can `ping 8.8.8.8` while you can't `ping google.com`
 
 
 This could simply be solved by running this in your root directory:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
   ```sh
   sudo rm /etc/resolv.conf
   sudo bash -c 'echo "nameserver 8.8.8.8" > /etc/resolv.conf'
@@ -1148,7 +1156,7 @@ This could simply be solved by running this in your root directory:
 This deletes your `resolv.conf` file that is automatically generated when you run WSL, creates a new file and puts `nameserver 8.8.8.8`, then creates a `wsl.conf` file and adds `[network]` and `generateResolveConf = false` to prevent auto-generation of that file.
 
 You can check the contents of the file by running:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
   ```sh
   cat /etc/resolv.conf
   ```
@@ -1175,7 +1183,7 @@ See [LICENSE.md](./LICENSE.md).
 
 Copyright [OpenJS Foundation](https://openjsf.org) and `nvm` contributors. All rights reserved. The [OpenJS Foundation](https://openjsf.org) has registered trademarks and uses trademarks.  For a list of trademarks of the [OpenJS Foundation](https://openjsf.org), please see our [Trademark Policy](https://trademark-policy.openjsf.org/) and [Trademark List](https://trademark-list.openjsf.org/).  Trademarks and logos not indicated on the [list of OpenJS Foundation trademarks](https://trademark-list.openjsf.org) are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them.
 [The OpenJS Foundation](https://openjsf.org/) | [Terms of Use](https://terms-of-use.openjsf.org/) | [Privacy Policy](https://privacy-policy.openjsf.org/) | [Bylaws](https://bylaws.openjsf.org/) | [Code of Conduct](https://code-of-conduct.openjsf.org) | [Trademark Policy](https://trademark-policy.openjsf.org/) | [Trademark List](https://trademark-list.openjsf.org/) | [Cookie Policy](https://www.linuxfoundation.org/cookies/)
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 #!/usr/bin/env bash
 
 { # this ensures the entire script is downloaded #
@@ -1378,7 +1386,7 @@ install_nvm_from_git() {
   return
 }
 
-#
+#([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 # Automatically install Node.js
 #
 nvm_install_node() {
@@ -1410,7 +1418,7 @@ install_nvm_as_script() {
   NVM_EXEC_SOURCE="$(nvm_source script-nvm-exec)"
   local NVM_BASH_COMPLETION_SOURCE
   NVM_BASH_COMPLETION_SOURCE="$(nvm_source script-nvm-bash-completion)"
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
   # Downloading to $INSTALL_DIR
   mkdir -p "$INSTALL_DIR"
   if [ -f "$INSTALL_DIR/nvm.sh" ]; then
@@ -1671,7 +1679,8 @@ nvm_reset() {
 [ "_$NVM_ENV" = "_testing" ] || nvm_do_install
 
 } # this ensures the entire script is downloaded #
-# Contributing to Angular
+
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")# Contributing to Angular
 nvm install 20.10.0
 <docs-decorative-header title="What is Angular?" imgSrc="adev/src/assets/images/what_is_angular.svg"> <!-- markdownlint-disable-line -->
 </docs-decorative-header>
@@ -1690,7 +1699,7 @@ what it's like to use Angular, or get started in the [Tutorial](tutorials/learn-
 prefer following step-by-step instructions.
 
 ## Features that power your development
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 <docs-card-container>
   <docs-card title="Keep your codebase organized with an opinionated component model and flexible dependency injection
 system" href="guide/components" link="Get started with Components">
@@ -1717,9 +1726,9 @@ more">
   [Angular's forms module](guide/forms) provides a standardized system for form participation and validation.
   </docs-card>
 </docs-card-container>
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ## Develop applications faster than ever
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 <docs-card-container>
   <docs-card title="Effortlessly build, serve, test, deploy with Angular CLI" href="tools/cli" link="Angular CLI">
   Angular CLI gets your project running in under a minute with the commands you need to
@@ -1740,14 +1749,14 @@ more">
   diagnostics in your favorite editor.
   </docs-card>
 </docs-card-container>
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ## Ship with confidence
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 <docs-card-container>
   <docs-card title="Verified commit-by-commit against Google's colossal monorepo" href="https://cacm.acm.org/magazines/2016/7/204032-why-google-stores-billions-of-lines-of-code-in-a-single-repository/fulltext" link="Learn about Google's monorepo">
   Every Angular commit is checked against _hundreds of thousands_ of tests in Google's internal code
   repository, representing countless real-world scenarios.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
   Angular is committed to stability for some of Google’s largest products, including Google Cloud.
   This commitment ensures changes are well-tested, backwards compatible, and include migration tools
   whenever possible.
@@ -1760,9 +1769,9 @@ more">
   and the web platform.
   </docs-card>
 </docs-card-container>
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ## Works at any scale
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 <docs-card-container>
   <docs-card title="Reach users everywhere with internationalization support" href="guide/i18n" link="Internationalization">
   Angular's internationalization features handle message translations and formatting, including
@@ -1783,9 +1792,9 @@ more">
   further improve Angular's scalability, from [Google Fonts](https://fonts.google.com/) to [Google Cloud](https://console.cloud.google.com).
   </docs-card>
 </docs-card-container>
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ## Open-source first
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 <docs-card-container>
   <docs-card title="Made in the open on GitHub" href="https://github.com/angular/angular" link="Star our GitHub">
   Curious what we’re working on? Every PR and commit is available on our GitHub. Run into an issue or bug? We triage GitHub issues regularly to ensure we’re responsive and engaged with our community, and solving the real world problems you’re facing.
@@ -1794,7 +1803,7 @@ more">
   Our team publishes a public roadmap of our current and future work and values your feedback. We publish Request for Comments (RFCs) to collect feedback on larger feature changes and ensure the community voice is heard while shaping the future direction of Angular.
   </docs-card>
 </docs-card-container>
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ## A thriving community
 
 <docs-card-container>
@@ -1839,7 +1848,7 @@ As a contributor, here are the guidelines we would like you to follow:
  - [Commit Message Guidelines](#commit)
  - [Signing the CLA](#cla)
 
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ## <a name="coc"></a> Code of Conduct
 
 Help us keep Angular open and inclusive.
@@ -1919,7 +1928,7 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 4. [Fork](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo) the [angular/angular](https://github.com/angular/angular/fork) repo.
 
 5. In your forked repository, make your changes in a new git branch:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
      ```shell
      git checkout -b my-fix-branch main
      ```
@@ -1932,21 +1941,21 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 
 9. Commit your changes using a descriptive commit message that follows our [commit message conventions][commit-message-guidelines].
    Adherence to these conventions is necessary because release notes are automatically generated from these messages.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
      ```shell
      git commit --all
      ```
     Note: the optional commit `--all` command line option will automatically "add" and "rm" edited files.
 
 10. Push your branch to GitHub:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
     ```shell
     git push origin my-fix-branch
     ```
 
 11. In GitHub, send a pull request to `angular:main`.
 
-### Reviewing a Pull Request
+#([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")## Reviewing a Pull Request
 
 The Angular team reserves the right not to accept pull requests from community members who haven't been good citizens of the community. Such behavior includes not following the [Angular code of conduct](https://github.com/angular/code-of-conduct) and applies within or outside of Angular managed channels.
 
@@ -1959,7 +1968,7 @@ If we ask for changes via code reviews then:
 2. Re-run the Angular test suites to ensure tests are still passing.
 
 3. Create a fixup commit and push to your GitHub repository (this will update your Pull Request):
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
     ```shell
     git commit --all --fixup HEAD
     git push
@@ -1976,11 +1985,11 @@ A reviewer might often suggest changes to a commit message (for example, to add 
 In order to update the commit message of the last commit on your branch:
 
 1. Check out your branch:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
     ```shell
     git checkout my-fix-branch
     ```
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 2. Amend the last commit and modify the commit message:
 
     ```shell
@@ -1988,7 +1997,7 @@ In order to update the commit message of the last commit on your branch:
     ```
 
 3. Push to your GitHub repository:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
     ```shell
     git push --force-with-lease
     ```
@@ -1997,31 +2006,31 @@ In order to update the commit message of the last commit on your branch:
 > If you need to update the commit message of an earlier commit, you can use `git rebase` in interactive mode.
 > See the [git docs](https://git-scm.com/docs/git-rebase#_interactive_mode) for more details.
 
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 #### After your pull request is merged
 
 After your pull request is merged, you can safely delete your branch and pull the changes from the main (upstream) repository:
 
 * Delete the remote branch on GitHub either through the GitHub web UI or your local shell as follows:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
     ```shell
     git push origin --delete my-fix-branch
     ```
 
 * Check out the main branch:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
     ```shell
     git checkout main -f
     ```
 
 * Delete the local branch:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
     ```shell
     git branch -D my-fix-branch
     ```
 
 * Update your local `main` with the latest upstream version:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
     ```shell
     git pull --ff upstream main
     ```
@@ -2092,25 +2101,25 @@ server.listen(3000, '127.0.0.1', () => {
 
 # Docker has specific installation instructions for each operating system.
 # Please refer to the official documentation at https://docker.com/get-started/
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 # Pull the Node.js Docker image:
 docker pull node:22-alpine
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 # Create a Node.js container and start a Shell session:
 docker run -it --rm --entrypoint sh node:22-alpine
 # Use bash for the shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 # Create a script file sourced by both interactive and non-interactive bash shells
 ENV BASH_ENV /home/user/.bash_env
 RUN touch "${BASH_ENV}"
 RUN echo '. "${BASH_ENV}"' >> ~/.bashrc
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 # Download and install nvm
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | PROFILE="${BASH_ENV}" bash
 RUN echo node > .nvmrc
 RUN nvm install
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 # Verify the Node.js version:
 node -v # Should print "v22.16.0".
 
@@ -2485,6 +2494,7 @@ v12.22.6
 Simple as that!
 
 About
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 nvm is a version manager for node.js, designed to be installed per-user, and invoked per-shell. nvm works on any POSIX-compliant shell (sh, dash, ksh, zsh, bash), in particular on these platforms: unix, macOS, and windows WSL.
 
 ([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
@@ -2511,43 +2521,43 @@ You can customize the install source, directory, profile, and version using the 
 The installer can use git, curl, or wget to download nvm, whichever is available.
 
 You can instruct the installer to not edit your shell config (for example if you already get completions via a zsh nvm plugin) by setting PROFILE=/dev/null before running the install.sh script. Here's an example one-line command to do that: PROFILE=/dev/null bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash'
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 Installing in Docker
 When invoking bash as a non-interactive shell, like in a Docker container, none of the regular profile files are sourced. In order to use nvm, node, and npm like normal, you can instead specify the special BASH_ENV variable, which bash sources when invoked non-interactively.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 # Use bash for the shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 # Create a script file sourced by both interactive and non-interactive bash shells
 ENV BASH_ENV /home/user/.bash_env
 RUN touch "${BASH_ENV}"
 RUN echo '. "${BASH_ENV}"' >> ~/.bashrc
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 # Download and install nvm
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | PROFILE="${BASH_ENV}" bash
 RUN echo node > .nvmrc
 RUN nvm install
 Installing in Docker for CICD-Jobs
 More robust, works in CI/CD-Jobs. Can be run in interactive and non-interactive containers. See #3531.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 FROM ubuntu:latest
 ARG NODE_VERSION=20
 
 # install curl
 RUN apt update && apt install curl -y
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 # install nvm
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 # set env
 ENV NVM_DIR=/root/.nvm
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 # install node
 RUN bash -c "source $NVM_DIR/nvm.sh && nvm install $NODE_VERSION"
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 # set ENTRYPOINT for reloading nvm-environment
 ENTRYPOINT ["bash", "-c", "source $NVM_DIR/nvm.sh && exec \"$@\"", "--"]
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 # set cmd to bash
 CMD ["/bin/bash"]
 This example defaults to installation of nodejs version 20.x.y. Optionally you can easily override the version with docker build args like:
@@ -2573,7 +2583,7 @@ user@host:/tmp/test $ docker run --rm -it nvmimage npm -v
 9.6.3
 Troubleshooting on Linux
 On Linux, after running the install script, if you get nvm: command not found or see no feedback from your terminal after you type command -v nvm, simply close your current terminal, open a new terminal, and try verifying again. Alternatively, you can run the following commands for the different shells on the command line:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 bash: source ~/.bashrc
 
 zsh: source ~/.zshrc
@@ -2581,7 +2591,7 @@ zsh: source ~/.zshrc
 ksh: . ~/.profile
 
 These should pick up the nvm command.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 Troubleshooting on macOS
 Since OS X 10.9, /usr/bin/git has been preset by Xcode command line tools, which means we can't properly detect if Git is installed or not. You need to manually install the Xcode command line tools before running the install script, otherwise, it'll fail. (see #1782)
 
@@ -2606,7 +2616,7 @@ Try adding the snippet from the install section, that finds the correct nvm dire
 For more information about this issue and possible workarounds, please refer here
 
 Note For Macs with the Apple Silicon chip, node started offering arm64 arch Darwin packages since v16.0.0 and experimental arm64 support when compiling from source since v14.17.0. If you are facing issues installing node using nvm, you may want to update to one of those versions or later.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 Ansible
 You can use a task:
 
@@ -2617,7 +2627,7 @@ You can use a task:
     creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
 Verify Installation
 To verify that nvm has been installed, do:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 command -v nvm
 which should output nvm if the installation was successful. Please note that which nvm will not work, since nvm is a sourced shell function, not an executable binary.
 
@@ -2655,7 +2665,7 @@ Homebrew installation is not supported. If you have issues with homebrew-install
 Note: If you're using zsh you can easily install nvm as a zsh plugin. Install zsh-nvm and run nvm upgrade to upgrade (you can set NVM_AUTO_USE=true to have it automatically detect and use .nvmrc files).
 
 Note: Git versions before v1.7 may face a problem of cloning nvm source from GitHub via https protocol, and there is also different behavior of git before v1.6, and git prior to v1.17.10 can not clone tags, so the minimum required git version is v1.7.10. If you are interested in the problem we mentioned here, please refer to GitHub's HTTPS cloning errors article.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 Git Install
 If you have git installed (requires git v1.7.10+):
 
@@ -2677,7 +2687,7 @@ export NVM_DIR="$HOME/.nvm" && (
   git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)`
 ) && \. "$NVM_DIR/nvm.sh"
 Now add these lines to your ~/.bashrc, ~/.profile, or ~/.zshrc file to have it automatically sourced upon login: (you may have to add to more than one of the above files)
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
@@ -2765,7 +2775,7 @@ If you've already gotten an error to the effect of "npm does not support Node.js
 
 Default Global Packages From File While Installing
 If you have a list of default packages you want installed every time you install a new version, we support that too -- just add the package names, one per line, to the file $NVM_DIR/default-packages. You can add anything npm would accept as a package argument on the command line.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 # $NVM_DIR/default-packages
 
 rimraf
@@ -2863,7 +2873,7 @@ $ echo "lts/*" > .nvmrc # to default to the latest LTS version
 
 $ echo "node" > .nvmrc # to default to the latest version
 [NB these examples assume a POSIX-compliant shell version of echo. If you use a Windows cmd development environment, eg the .nvmrc file is used to configure a remote Linux deployment, then keep in mind the "s will be copied leading to an invalid file. Remove them.]
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 Then when you run nvm use:
 
 $ nvm use
@@ -3100,7 +3110,7 @@ The Node project has some desire but no concrete plans (due to the overheads of 
 
 As a potential alternative, @mhart (a Node contributor) has some Docker images for Alpine Linux with Node and optionally, npm, pre-installed.
 
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 Uninstalling / Removal
 Manual Uninstall
 To remove nvm manually, execute the following:
@@ -3514,11 +3524,11 @@ contributions because of something that could have been communicated early on.
 * [Create a fork of the GitHub repo][fork-repo] to ensure that you can push your changes for us to
 review.
 * Make your changes in a new git branch:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
   ```shell
   git checkout -b my-fix-branch main
   ```
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 * Create your change, **including appropriate test cases**. Changes with tests are more likely to be
 merged.
 * Avoid checking in files that shouldn't be tracked (e.g `node_modules`, `gulp-cache`, `.tmp`,
@@ -3526,7 +3536,7 @@ merged.
 the `.gitignore` at the root of the package (click [here][gitignore] to read more on how to add
 entries to the `.gitignore`).
 * Commit your changes
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
      ```shell
      git commit -a
      ```
@@ -3534,13 +3544,13 @@ entries to the `.gitignore`).
   files._
 
 * Test your changes locally to ensure everything is in good working order:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
     ```shell
    npm test
     ```
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 * Push your branch to your fork on GitHub:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
     ```shell
     git push origin my-fix-branch
     ```
@@ -3560,7 +3570,7 @@ change.
 
 Start the changeset creation process by running the following command in the base directory of the
 repository:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```shell
 yarn changeset
 ```
@@ -3578,7 +3588,7 @@ Please always include the firebase package with the same version bump type as yo
 to ensure that the version of the firebase package will be bumped correctly, 
 
  For example,
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```
 ---
 "@firebase/storage": minor
@@ -3593,7 +3603,7 @@ You do not need to create a Changeset for the following changes:
  * the addition or alteration of a test
  * documentation updates
  * updates to the repository’s CI
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 #### Multiple changeset files
 
 If your PR touches multiple SDKs or addresses multiple issues that require
@@ -3619,7 +3629,7 @@ A Formatting Check CI failure in your PR indicates that the code does not follow
 formatting guidelines. In your local build environment, please run the code formatting tool locally
 by executing the command `yarn format`. Once the code is formatted, commit the changes and push your
 branch. The push should cause the CI to re-check your PR's changes.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 # Generating Documentation HTML Files
 
 If the Doc Change Check fails in your PR, it indicates that the documentation has not been generated
@@ -3659,6 +3669,7 @@ polished. However, it should be enough to preview the content.
 - **Dockerized:** Run both with `docker-compose up`
 
 ## Quick Start
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 # nvm-web Google Cloud Quickstart
 
 This guide shows how to deploy your nvm-web project (Node.js backend + React frontend, both in Docker) to Google Cloud using **Cloud Run**.
@@ -3675,7 +3686,7 @@ This guide shows how to deploy your nvm-web project (Node.js backend + React fro
 ---
 
 ## 1. Set Up Google Cloud
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```bash
 gcloud auth login
 gcloud config set project YOUR_PROJECT_ID
@@ -3685,7 +3696,7 @@ gcloud config set run/region YOUR_REGION
 ---
 
 ## 2. Enable Required APIs
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```bash
 gcloud services enable run.googleapis.com artifactregistry.googleapis.com
 ```
@@ -3695,20 +3706,20 @@ gcloud services enable run.googleapis.com artifactregistry.googleapis.com
 ## 3. Build & Push Docker Images
 
 1. **Create Artifact Registry:**
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
    ```bash
    gcloud artifacts repositories create nvm-web-repo --repository-format=docker --location=YOUR_REGION
    ```
 
 2. **Build and Push Backend:**
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
    ```bash
    docker build -t YOUR_REGION-docker.pkg.dev/YOUR_PROJECT_ID/nvm-web-repo/nvm-web-backend:latest ./backend
    docker push YOUR_REGION-docker.pkg.dev/YOUR_PROJECT_ID/nvm-web-repo/nvm-web-backend:latest
    ```
 
 3. **Build and Push Frontend:**
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
    ```bash
    docker build -t YOUR_REGION-docker.pkg.dev/YOUR_PROJECT_ID/nvm-web-repo/nvm-web-frontend:latest ./frontend
    docker push YOUR_REGION-docker.pkg.dev/YOUR_PROJECT_ID/nvm-web-repo/nvm-web-frontend:latest
@@ -3719,7 +3730,7 @@ gcloud services enable run.googleapis.com artifactregistry.googleapis.com
 ## 4. Deploy to Cloud Run
 
 1. **Deploy Backend:**
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
    ```bash
    gcloud run deploy nvm-web-backend \
      --image YOUR_REGION-docker.pkg.dev/YOUR_PROJECT_ID/nvm-web-repo/nvm-web-backend:latest \
@@ -3729,7 +3740,7 @@ gcloud services enable run.googleapis.com artifactregistry.googleapis.com
    ```
 
 2. **Deploy Frontend:**
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
    ```bash
    gcloud run deploy nvm-web-frontend \
      --image YOUR_REGION-docker.pkg.dev/YOUR_PROJECT_ID/nvm-web-repo/nvm-web-frontend:latest \
@@ -3741,12 +3752,12 @@ gcloud services enable run.googleapis.com artifactregistry.googleapis.com
 ---
 
 ## 5. Access Your Services
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 - After deployment, Cloud Run will give you unique URLs for frontend and backend.
 - Set your frontend to use the backend’s URL for API calls (edit `.env` or config before building frontend).
 
 ---
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ## 6. (Optional) Use a Custom Domain
 
 - [Map a custom domain to your Cloud Run services](https://cloud.google.com/run/docs/mapping-custom-domains).
@@ -3757,7 +3768,7 @@ gcloud services enable run.googleapis.com artifactregistry.googleapis.com
 ## 7. Clean Up
 
 To avoid charges:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 ```bash
 gcloud run services delete nvm-web-backend
 gcloud run services delete nvm-web-frontend
@@ -3971,7 +3982,7 @@ You can configure most Firebase Hosting options directly in the firebase.json fi
 Note: If you run firebase init again for any Firebase service, the command will overwrite the corresponding section of the firebase.json file back to the default configuration for that service.
 The following is an example firebase.json file with default settings if you select Firebase Hosting, Cloud Firestore, and Cloud Functions for Firebase (with TypeScript source and lint options selected) during initialization.
 
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 {
   "hosting": {
     "public": "public",
@@ -3998,7 +4009,7 @@ Configuration for multiple Cloud Firestore databases
 When you run firebase init, your firebase.json file will contain a single firestore key corresponding to your project's default database, as shown above.
 
 If your project contains multiple Cloud Firestore databases, edit your firebase.json file to associate different Cloud Firestore Security Rules and database index source files with each database. Modify the file with a JSON array, with one entry for each database.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
       "firestore": [
         {
           "database": "(default)",
@@ -4015,7 +4026,7 @@ Cloud Functions files to ignore on deploy
 At function deployment time, the CLI automatically specifies a list of files in the functions directory to ignore. This prevents deploying to the backend extraneous files that could increase the data size of your deployment.
 
 The list of files ignored by default, shown in JSON format, is:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 "ignore": [
   ".git",
   ".runtimeconfig.json",
@@ -4024,7 +4035,7 @@ The list of files ignored by default, shown in JSON format, is:
   "node_modules"
 ]
 If you add your own custom values for ignore in firebase.json, make sure that you keep (or add, if it is missing) the list of files shown above.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 Manage project aliases
 You can associate multiple Firebase projects with the same project directory. For example, you might want to use one Firebase project for staging and another for production. By using different project environments, you can verify changes before deploying to production. The firebase use command allows you to switch between aliases as well as create new aliases.
 
@@ -4134,7 +4145,7 @@ firebase deploy --only functions:function1,functions:function2
 Another option is to group functions into export groups in your /functions/index.js file. Grouping functions allows you to deploy multiple functions using a single command.
 
 For example, you can write the following functions to define a groupA and a groupB:
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 var functions = require('firebase-functions/v1');
 
 exports.groupA = {
@@ -4179,7 +4190,7 @@ You can connect shell scripts to the firebase deploy command to perform predeplo
 To set up predeploy or postdeploy hooks, add bash scripts to your firebase.json configuration file. You can define brief scripts directly in the firebase.json file, or you can reference other files that are in your project directory.
 
 For example, the following script is the firebase.json expression for a postdeploy task that sends a Slack message upon successful deployment to Firebase Hosting.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 "hosting": {
   // ...
 
@@ -4594,7 +4605,7 @@ Access Firebase services in your app
 Firebase services (like Cloud Firestore, Authentication, Realtime Database, Remote Config, and more) are available to import within individual sub-packages.
 
 The example below shows how you could use the Cloud Firestore Lite SDK to retrieve a list of data.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
 // Follow this pattern to import other Firebase services
@@ -4940,7 +4951,7 @@ You can configure most Firebase Hosting options directly in the firebase.json fi
 Note: If you run firebase init again for any Firebase service, the command will overwrite the corresponding section of the firebase.json file back to the default configuration for that service.
 The following is an example firebase.json file with default settings if you select Firebase Hosting, Cloud Firestore, and Cloud Functions for Firebase (with TypeScript source and lint options selected) during initialization.
 
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 {
   "hosting": {
     "public": "public",
@@ -4968,7 +4979,7 @@ When you run firebase init, your firebase.json file will contain a single firest
 
 If your project contains multiple Cloud Firestore databases, edit your firebase.json file to associate different Cloud Firestore Security Rules and database index source files with each database. Modify the file with a JSON array, with one entry for each database.
 
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
       "firestore": [
         {
           "database": "(default)",
@@ -4986,7 +4997,7 @@ At function deployment time, the CLI automatically specifies a list of files in 
 
 The list of files ignored by default, shown in JSON format, is:
 
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 "ignore": [
   ".git",
   ".runtimeconfig.json",
@@ -5170,7 +5181,7 @@ You can connect shell scripts to the firebase deploy command to perform predeplo
 To set up predeploy or postdeploy hooks, add bash scripts to your firebase.json configuration file. You can define brief scripts directly in the firebase.json file, or you can reference other files that are in your project directory.
 
 For example, the following script is the firebase.json expression for a postdeploy task that sends a Slack message upon successful deployment to Firebase Hosting.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 
 "hosting": {
   // ...
@@ -5651,7 +5662,7 @@ Does your app use NDK? Go to the NDK crash reporting documentation to learn how 
 In your module (app-level) Gradle file (usually <project>/<app-module>/build.gradle.kts or <project>/<app-module>/build.gradle), add the dependency for the Crashlytics library for Android. We recommend using the Firebase Android BoM to control library versioning.
 To take advantage of breadcrumb logs, also add the Firebase SDK for Google Analytics to your app. Make sure that Google Analytics is enabled in your Firebase project.
 
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 dependencies {
     // Import the BoM for the Firebase platform
     implementation(platform("com.google.firebase:firebase-bom:33.15.0"))
@@ -5733,7 +5744,7 @@ If you've refreshed the console and you're still not seeing the test crash after
 
 
 And that's it! Crashlytics is now monitoring your app for crashes, non-fatal errors, and ANRs. Visit the Crashlytics dashboard to view and investigate all your reports and statistics.
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 Next steps
 Customize your crash report setup by adding opt-in reporting, logs, keys, and tracking of non-fatal errors.
 Integrate with Google Play so that you can filter your Android app's crash reports by Google Play track directly in the Crashlytics dashboard. This allows you to better focus your dashboard on specific builds.
@@ -5776,7 +5787,7 @@ Terms
 Privacy
 
 English
-
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 The MIT License (MIT)
 
 Copyright (c) 2010 Tim Caswell
