@@ -449,6 +449,7 @@ jobs:
 
 
 
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 #!/usr/bin/env bash
 
 set -e
@@ -466,11 +467,13 @@ nvm_is_version_installed() {
   return 1
 }
 
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 nvm_make_alias() {
   # prevent local alias creation
   return 0
 }
 
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 nvm_ls_remote > "$MOCKS_DIR/nvm_ls_remote.txt"
 nvm_ls_remote_iojs > "$MOCKS_DIR/nvm_ls_remote_iojs.txt"
 NVM_LTS=* nvm_ls_remote > "$MOCKS_DIR/nvm_ls_remote LTS.txt"
@@ -485,6 +488,7 @@ nvm_print_implicit_alias remote stable > "$MOCKS_DIR/nvm_print_implicit_alias re
 nvm_ls_remote stable > "$MOCKS_DIR/nvm_ls_remote stable.txt"
 nvm alias "lts/*" > "$MOCKS_DIR/lts-star.txt"
 
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 set +e
 NVM_NODEJS_ORG_MIRROR=https://nodejs.org/download/nightly/ nvm_ls_remote > "$MOCKS_DIR/nvm_ls_remote nightly.txt"
 nvm_download -L -s "$(nvm_get_mirror node std)/index.tab" -o - > "$MOCKS_DIR/nodejs.org-dist-index.tab"
@@ -492,6 +496,7 @@ NVM_NODEJS_ORG_MIRROR=https://nodejs.org/download/nightly/ nvm_print_implicit_al
 NVM_NODEJS_ORG_MIRROR=https://nodejs.org/download/nightly/ nvm_ls_remote stable > "$MOCKS_DIR/nvm_ls_remote stable nightly.txt"
 NVM_NODEJS_ORG_MIRROR=https://nodejs.org/download/nightly/ NVM_LTS=* nvm_ls_remote > "$MOCKS_DIR/nvm_ls_remote LTS nightly.txt"
 NVM_NODEJS_ORG_MIRROR=https://nodejs.org/download/nightly/ NVM_LTS=argon nvm_ls_remote > "$MOCKS_DIR/nvm_ls_remote LTS nightly argon.txt"
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 set -e
 
 ALIAS_PATH="$MOCKS_DIR/nvm_make_alias LTS alias calls.txt"
@@ -509,6 +514,7 @@ nvm ls-remote --lts > /dev/null
 
 echo "done! Don't forget to git commit them."
 
+([ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh")
 4b4154ea040349bfd40215ec4e4cc9f372fe95f3# nvmwebeconsappbuildjaabe
 nvm webeconsappbuildjaabe
 # NVM Web – Minimal Starter
