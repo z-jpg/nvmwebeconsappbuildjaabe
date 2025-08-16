@@ -5942,6 +5942,37 @@ load_nvm > /dev/stderr
 Tests are written in [Urchin]. Install Urchin (and other dependencies) like so:
 
     npm install
+// server.mjs
+import { createServer } from 'node:http';
+
+const server = createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('Hello World!\n');
+});
+
+// starts a simple http server locally on port 3000
+server.listen(3000, '127.0.0.1', () => {
+  console.log('Listening on 127.0.0.1:3000');
+});
+
+// run with `node server.mjs`
+# Docker has specific installation instructions for each operating system.
+# Please refer to the official documentation at https://docker.com/get-started/
+
+# Pull the Node.js Docker image:
+docker pull node:22-alpine
+
+# Create a Node.js container and start a Shell session:
+docker run -it --rm --entrypoint sh node:22-alpine
+
+# Verify the Node.js version:
+node -v # Should print "v22.18.0".
+
+# Verify npm version:
+npm -v # Should print "10.9.3".
+
+
+
 
 There are slow tests and fast tests. The slow tests do things like install node
 and check that the right versions are used. The fast tests fake this to test
