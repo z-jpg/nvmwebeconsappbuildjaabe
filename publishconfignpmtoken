@@ -1,6 +1,6 @@
 "publishConfig": {
-  "registry": "https://npm.pkg.github.com"
-},
+  "registry": "https://npm.pkg.github.com" 
+},  #!/usr/bin/env bash
 "publishConfig": { "registry": "https://npm.pkg.github.com" }, #!/usr/bin/env bash
 
 { # this ensures the entire script is downloaded #
